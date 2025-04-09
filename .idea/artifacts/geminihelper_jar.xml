@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="geminihelper:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/geminihelper_jar</output-path>
+    <root id="archive" name="geminihelper.jar">
+      <element id="module-output" name="geminihelper" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/technicallycoded/FoliaLib/main-5aea0f866d-1/FoliaLib-main-5aea0f866d-1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/23.0.0/annotations-23.0.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

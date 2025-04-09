@@ -1,0 +1,109 @@
+# Configurações da API Gemini
+api:
+  # URL base da API
+  baseUrl: "https://generativelanguage.googleapis.com/v1beta"
+
+  # Modelo do Gemini a ser usado
+  model: "gemini-2.0-flash"
+
+  # Tempo limite de conexão em segundos
+  connectionTimeout: 10
+
+  # Texto da system_instruction (instruções do sistema para o modelo)
+  systemInstructionText: |
+    You are an AI specialized in Minecraft and your name is AxalotAI. Your job is to answer players’ questions clearly, quickly, and functionally—just like a regular experienced player in chat.
+    
+    Mandatory rules:
+    - Only respond to what the player asks. Do NOT mention unrelated commands, features, or server info unless directly relevant to the question.
+    - Keep replies short and to the point, but still helpful. Max 4–5 lines.
+    - Use Minecraft Legacy formatting and Hex color codes to highlight key parts. Use §c, §a, §e, §6, etc. for Legacy, and §#RRGGBB for Hex. You can also use styles like bold (§l), italic (§o), underline (§n), strikethrough (§m), and reset (§r).
+    - Sound like a chill, skilled player helping out—not a robot or plugin. Keep it casual, avoid technical jargon.
+    
+    Server-specific info (only use if the player asks about it):
+    - The server shop is at /warp loja
+    - The economy is diamond-based
+    - Daily quests are available at the NPC near spawn
+    - World teleport costs 100 coins
+    - PvP is only on in red-flagged battle zones
+    - Discord: discord.gg/exemplo
+    
+    Bonus behavior:
+    - If geolocation is available, you can throw in light slang or local flavor (e.g., “mano” for Brazil, “mate” for AU, “bro” for US, etc.) to make it feel more personal—**but only if it fits the flow**.
+
+  # Corpo personalizado da requisição (usado quando requestBodyFormat = "custom")
+  # Use {prompt} como placeholder para a mensagem do usuário
+  # Use {instriction} como placeholder para o texto da system_instruction
+  RequestBody: |
+    {
+      "system_instruction": {
+        "parts": [
+          {
+            "text": "{instriction}"
+          }
+        ]
+      },
+      "contents": [
+        {
+          "parts": [
+            {
+              "text": "{prompt}"
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "temperature": 0.7,
+        "maxOutputTokens": 800,
+        "topP": 0.9
+      }
+    }
+
+# Sua chave API (recomendável usar um sistema de secrets em produção)
+apiKey: "YOUR_API_KEY_HERE"
+
+# Configurações de mensagens
+messages:
+  prefix: "&8[&bGemini&8] &f"
+  error: "&cErro: {message}"
+  loading: "&7Pensando..."
+  timeout: "&cA requisição excedeu o tempo limite."
+
+# Configurações de formatação
+use-minimessage-formatting: true  # Ativa/desativa a formatação MiniMessage
+use-emojis: true                 # Ativa/desativa o uso de emojis nas respostas
+
+# Prefixo do assistente (suporta códigos de cor com &)
+assistant-prefix: "&6[Assistente] &f"
+
+# Template do prompt enviado ao Gemini quando não está usando system_instruction
+# Você pode usar os seguintes placeholders específicos do plugin:
+# %player_question% - A pergunta do jogador
+# %player_x% - Coordenada X do jogador
+# %player_y% - Coordenada Y do jogador
+# %player_z% - Coordenada Z do jogador
+# %player_environment% - Informações do ambiente do jogador (mundo, bioma, tempo, clima)
+# %player_location_type% - Se o jogador está em uma caverna ou na superfície
+# %server_plugins% - Lista de plugins instalados no servidor
+#
+# Além disso, você pode usar qualquer placeholder do PlaceholderAPI se o plugin estiver instalado
+# Exemplos: %player_name%, %player_health%, %player_food_level%, etc.
+prompt-template: |
+  Player's question:
+  %player_question%
+
+  Player context:
+  - Name: %player_name%
+  - Health: %player_health%/20
+  - Coordinates: X: %player_x%, Y: %player_y%, Z: %player_z%
+  - Environment: %player_environment%
+
+  Geolocation data:
+  - Country: %geolocation_country% (%geolocation_countryCode%)
+  - Region: %geolocation_regionName% (%geolocation_region%)
+  - City: %geolocation_city%
+  - ZIP: %geolocation_zip%
+  - Coordinates: Latitude: %geolocation_lat%, Longitude: %geolocation_lon%
+  - Timezone: %geolocation_timezone%
+  - ISP: %geolocation_isp%
+
+
